@@ -5,8 +5,10 @@
  */
 package MyApp;
 
+import config.dbConnector;
 import internalPage.UserPage;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,9 +23,20 @@ public class add_User extends javax.swing.JFrame {
         initComponents();
     }
     
+    public void close(){
+        Dashboard dash = new Dashboard();
+        dash.setVisible(true);
+        UserPage up = new UserPage();
+        dash.mainDesktop.add(up).setVisible(true);
+        
+    }
+    
     Color navcolor = new Color(153,209,149);
     Color headcolor = new Color(153,204,255);
     Color bodycolor = new Color(204,255,102);
+    
+    public String gender;
+    public String action;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,32 +48,29 @@ public class add_User extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        add = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        edit = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        delete = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         close = new javax.swing.JLabel();
-        search = new javax.swing.JTextField();
-        search1 = new javax.swing.JTextField();
-        search2 = new javax.swing.JTextField();
-        search3 = new javax.swing.JTextField();
-        search4 = new javax.swing.JTextField();
+        f_name = new javax.swing.JTextField();
+        contact = new javax.swing.JTextField();
+        u_email = new javax.swing.JTextField();
+        l_name = new javax.swing.JTextField();
+        user_id = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        female = new javax.swing.JRadioButton();
+        male = new javax.swing.JRadioButton();
+        save = new javax.swing.JPanel();
+        au_label = new javax.swing.JLabel();
+        Username = new javax.swing.JTextField();
+        Password = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(750, 420));
         setResizable(false);
         setSize(new java.awt.Dimension(750, 420));
 
@@ -68,63 +78,6 @@ public class add_User extends javax.swing.JFrame {
         jPanel2.setMinimumSize(new java.awt.Dimension(760, 420));
         jPanel2.setPreferredSize(new java.awt.Dimension(760, 420));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        add.setBackground(new java.awt.Color(153, 209, 149));
-        add.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        add.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addMouseExited(evt);
-            }
-        });
-        add.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("ADD");
-        add.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
-
-        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, 80, -1));
-
-        edit.setBackground(new java.awt.Color(153, 209, 149));
-        edit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        edit.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                editMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                editMouseExited(evt);
-            }
-        });
-        edit.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("EDIT");
-        edit.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
-
-        jPanel2.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 80, -1));
-
-        delete.setBackground(new java.awt.Color(153, 209, 149));
-        delete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        delete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                deleteMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                deleteMouseExited(evt);
-            }
-        });
-        delete.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("DELETE");
-        delete.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
-
-        jPanel2.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 70, 80, -1));
 
         jPanel3.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -147,66 +100,67 @@ public class add_User extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 586, Short.MAX_VALUE)
-                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 584, Short.MAX_VALUE)
+                .addComponent(close, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                    .addComponent(close))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(close)
-                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 50));
 
-        search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        search.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        search.addActionListener(new java.awt.event.ActionListener() {
+        f_name.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        f_name.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        f_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchActionPerformed(evt);
+                f_nameActionPerformed(evt);
             }
         });
-        jPanel2.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 120, 260, 30));
+        jPanel2.add(f_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 260, 30));
 
-        search1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        search1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        search1.addActionListener(new java.awt.event.ActionListener() {
+        contact.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        contact.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        contact.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search1ActionPerformed(evt);
+                contactActionPerformed(evt);
             }
         });
-        jPanel2.add(search1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, 260, 30));
+        jPanel2.add(contact, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 260, 30));
 
-        search2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        search2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        search2.addActionListener(new java.awt.event.ActionListener() {
+        u_email.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        u_email.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        u_email.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search2ActionPerformed(evt);
+                u_emailActionPerformed(evt);
             }
         });
-        jPanel2.add(search2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 220, 260, 30));
+        jPanel2.add(u_email, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 220, 260, 30));
 
-        search3.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        search3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        search3.addActionListener(new java.awt.event.ActionListener() {
+        l_name.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        l_name.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        l_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search3ActionPerformed(evt);
+                l_nameActionPerformed(evt);
             }
         });
-        jPanel2.add(search3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 170, 260, 30));
+        jPanel2.add(l_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 260, 30));
 
-        search4.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        search4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        search4.addActionListener(new java.awt.event.ActionListener() {
+        user_id.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        user_id.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        user_id.setEnabled(false);
+        user_id.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search4ActionPerformed(evt);
+                user_idActionPerformed(evt);
             }
         });
-        jPanel2.add(search4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, 260, 30));
+        jPanel2.add(user_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 70, 260, 30));
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel2.setText("GENDER:");
@@ -218,11 +172,11 @@ public class add_User extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel7.setText("FIRST NAME:");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 110, 30));
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 130, 30));
 
         jLabel8.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel8.setText("LAST NAME:");
-        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 110, 30));
+        jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 130, 30));
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 18)); // NOI18N
         jLabel9.setText("EMAIL:");
@@ -232,29 +186,71 @@ public class add_User extends javax.swing.JFrame {
         jLabel10.setText("CONTACT:");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 100, 30));
 
-        jRadioButton1.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jRadioButton1.setText("FEMALE");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        female.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        female.setText("FEMALE");
+        female.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                femaleActionPerformed(evt);
             }
         });
-        jPanel2.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 320, -1, -1));
+        jPanel2.add(female, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, -1, -1));
 
-        jRadioButton2.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        jRadioButton2.setText("MALE");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+        male.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
+        male.setText("MALE");
+        male.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
+                maleActionPerformed(evt);
             }
         });
-        jPanel2.add(jRadioButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, -1, -1));
+        jPanel2.add(male, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 320, -1, -1));
+
+        save.setBackground(new java.awt.Color(153, 209, 149));
+        save.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        save.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                saveMouseClicked(evt);
+            }
+        });
+        save.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        au_label.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        au_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        au_label.setText("LABEL");
+        save.add(au_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 70, 30));
+
+        jPanel2.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 370, 70, 30));
+
+        Username.setBackground(new java.awt.Color(204, 255, 102));
+        Username.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        Username.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Username.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "Username"));
+        Username.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UsernameActionPerformed(evt);
+            }
+        });
+        jPanel2.add(Username, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 70, 230, 40));
+
+        Password.setBackground(new java.awt.Color(204, 255, 102));
+        Password.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        Password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        Password.setToolTipText("*");
+        Password.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "Password"));
+        Password.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        Password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PasswordActionPerformed(evt);
+            }
+        });
+        jPanel2.add(Password, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 130, 230, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,68 +261,76 @@ public class add_User extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseEntered
-        add.setBackground(bodycolor);
-    }//GEN-LAST:event_addMouseEntered
+    private void f_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f_nameActionPerformed
 
-    private void addMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseExited
-        add.setBackground(navcolor);
-    }//GEN-LAST:event_addMouseExited
+    }//GEN-LAST:event_f_nameActionPerformed
 
-    private void editMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseEntered
-        edit.setBackground(bodycolor);
-    }//GEN-LAST:event_editMouseEntered
-
-    private void editMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseExited
-        edit.setBackground(navcolor);
-    }//GEN-LAST:event_editMouseExited
-
-    private void deleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseEntered
-        delete.setBackground(bodycolor);
-    }//GEN-LAST:event_deleteMouseEntered
-
-    private void deleteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseExited
-        delete.setBackground(navcolor);
-    }//GEN-LAST:event_deleteMouseExited
-
-    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-
-    }//GEN-LAST:event_searchActionPerformed
-
-    private void search1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search1ActionPerformed
+    private void contactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_contactActionPerformed
         // TODO add_User your handling code here:
-    }//GEN-LAST:event_search1ActionPerformed
+    }//GEN-LAST:event_contactActionPerformed
 
-    private void search2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search2ActionPerformed
+    private void u_emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_u_emailActionPerformed
         // TODO add_User your handling code here:
-    }//GEN-LAST:event_search2ActionPerformed
+    }//GEN-LAST:event_u_emailActionPerformed
 
-    private void search3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search3ActionPerformed
+    private void l_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_l_nameActionPerformed
         // TODO add_User your handling code here:
-    }//GEN-LAST:event_search3ActionPerformed
+    }//GEN-LAST:event_l_nameActionPerformed
 
-    private void search4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search4ActionPerformed
+    private void user_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_user_idActionPerformed
         // TODO add_User your handling code here:
-    }//GEN-LAST:event_search4ActionPerformed
+    }//GEN-LAST:event_user_idActionPerformed
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add_User your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    private void femaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_femaleActionPerformed
+        male.setSelected(false);
+        if(female.isSelected()){
+            gender = "MALE";
+        }else{
+            gender = null;
+        }
+    }//GEN-LAST:event_femaleActionPerformed
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add_User your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
+    private void maleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleActionPerformed
+        female.setSelected(false);
+        if(male.isSelected()){
+            gender = "FEMALE";
+        }else{
+            gender = null;
+        }
+    }//GEN-LAST:event_maleActionPerformed
 
     private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
-        this.dispose();
-        Dashboard dash = new Dashboard();
-        dash.setVisible(true);
-        UserPage up = new UserPage();
-        dash.mainDesktop.add(up).setVisible(true);
-        
-        
-
+        close();
     }//GEN-LAST:event_closeMouseClicked
+
+    private void saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_saveMouseClicked
+        if (action != null && action.equals("Add")) { //Check for null action
+        dbConnector dbc = new dbConnector();
+        String sql = "INSERT INTO tbl_user(u_fname, u_lname, u_email, u_contact, u_gender, u_username, u_password)" //Added u_username and u_password
+                    + "VALUES('" + f_name.getText() + "','" + l_name.getText() + "','" + u_email.getText() + "','" + contact.getText() + "','" + gender + "', '" + Username.getText() + "', '" + Password.getText() + "')"; // Added username and password fields and corrected string concatenation.  Note the use of single quotes around string values.
+
+        int result = dbc.insertData(sql);
+        if (result == 1) {
+            JOptionPane.showMessageDialog(null, "Successfully Saved");
+            close();
+        } else {
+            System.out.println("Saving Data Failed! SQL: " + sql); //Print the SQL for debugging
+        }
+
+    } else if (action != null && action.equals("Update")) { //Check for null action
+        // Add your update logic here.  Remember to use proper parameterized queries to prevent SQL injection vulnerabilities.
+    }
+
+        
+    }//GEN-LAST:event_saveMouseClicked
+
+    private void UsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_UsernameActionPerformed
+
+    private void PasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PasswordActionPerformed
 
     /**
      * @param args the command line arguments
@@ -365,28 +369,26 @@ public class add_User extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel add;
+    public javax.swing.JTextField Password;
+    public javax.swing.JTextField Username;
+    public javax.swing.JLabel au_label;
     private javax.swing.JLabel close;
-    private javax.swing.JPanel delete;
-    private javax.swing.JPanel edit;
+    public javax.swing.JTextField contact;
+    public javax.swing.JTextField f_name;
+    public javax.swing.JRadioButton female;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField search;
-    private javax.swing.JTextField search1;
-    private javax.swing.JTextField search2;
-    private javax.swing.JTextField search3;
-    private javax.swing.JTextField search4;
+    public javax.swing.JTextField l_name;
+    public javax.swing.JRadioButton male;
+    private javax.swing.JPanel save;
+    public javax.swing.JTextField u_email;
+    public javax.swing.JTextField user_id;
     // End of variables declaration//GEN-END:variables
 }

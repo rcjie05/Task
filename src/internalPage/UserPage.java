@@ -8,8 +8,14 @@ package internalPage;
 import java.awt.Color;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import MyApp.add_User;
+import config.dbConnector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.TableModel;
+import net.proteanit.sql.DbUtils;
 
 /**
  *
@@ -23,6 +29,8 @@ public class UserPage extends javax.swing.JInternalFrame {
     public UserPage() {
         initComponents();
         
+        displayData();
+        
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0,0,0,0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
         bi.setNorthPane(null);
@@ -32,9 +40,24 @@ public class UserPage extends javax.swing.JInternalFrame {
 
     }
     
+    public void displayData(){
+        try{
+            dbConnector dbc = new dbConnector();
+            ResultSet rs = dbc.getData("SELECT * FROM tbl_user");
+            UsersTable.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        }catch(SQLException ex){
+                    System.out.println("Errors:"+ex.getMessage());
+      
+        }
+        
+                
+    }
+    
     Color navcolor = new Color(153,209,149);
     Color headcolor = new Color(153,204,255);
     Color bodycolor = new Color(204,255,102);
+    
     
 
     /**
@@ -53,14 +76,16 @@ public class UserPage extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         edit = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        delete = new javax.swing.JPanel();
+        refresh = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        UsersTable = new javax.swing.JTable();
         search = new javax.swing.JTextField();
+        delete = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(760, 420));
 
@@ -85,9 +110,9 @@ public class UserPage extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("ADD");
-        add.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
+        add.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 62, 30));
 
-        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 80, -1));
+        jPanel2.add(add, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
 
         searchB.setBackground(new java.awt.Color(153, 209, 149));
         searchB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -111,6 +136,9 @@ public class UserPage extends javax.swing.JInternalFrame {
         edit.setBackground(new java.awt.Color(153, 209, 149));
         edit.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         edit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 editMouseEntered(evt);
             }
@@ -123,28 +151,28 @@ public class UserPage extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("EDIT");
-        edit.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
+        edit.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 60, 30));
 
-        jPanel2.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 80, -1));
+        jPanel2.add(edit, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 60, 60, -1));
 
-        delete.setBackground(new java.awt.Color(153, 209, 149));
-        delete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        delete.addMouseListener(new java.awt.event.MouseAdapter() {
+        refresh.setBackground(new java.awt.Color(153, 209, 149));
+        refresh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        refresh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                deleteMouseEntered(evt);
+                refreshMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                deleteMouseExited(evt);
+                refreshMouseExited(evt);
             }
         });
-        delete.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        refresh.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("DELETE");
-        delete.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 62, 30));
+        jLabel5.setText("REFRESH");
+        refresh.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 60, 30));
 
-        jPanel2.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 60, 80, -1));
+        jPanel2.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 60, 60, 30));
 
         jPanel3.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -176,7 +204,7 @@ public class UserPage extends javax.swing.JInternalFrame {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 50));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        UsersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -187,9 +215,9 @@ public class UserPage extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(UsersTable);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 710, 270));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 110, 720, 290));
 
         search.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
         search.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -200,17 +228,36 @@ public class UserPage extends javax.swing.JInternalFrame {
         });
         jPanel2.add(search, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 280, 30));
 
+        delete.setBackground(new java.awt.Color(153, 209, 149));
+        delete.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        delete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                deleteMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                deleteMouseExited(evt);
+            }
+        });
+        delete.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel7.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("DELETE");
+        delete.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 60, 30));
+
+        jPanel2.add(delete, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 60, 60, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -244,6 +291,24 @@ public class UserPage extends javax.swing.JInternalFrame {
         edit.setBackground(navcolor);
     }//GEN-LAST:event_editMouseExited
 
+    private void refreshMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseEntered
+        refresh.setBackground(bodycolor);
+    }//GEN-LAST:event_refreshMouseEntered
+
+    private void refreshMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseExited
+        refresh.setBackground(navcolor);
+    }//GEN-LAST:event_refreshMouseExited
+
+    private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
+        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        mainFrame.dispose();
+        add_User au = new add_User();
+        au.setVisible(true);
+        au.action = "Add";
+        au.au_label.setText("SAVE");
+        
+    }//GEN-LAST:event_addMouseClicked
+
     private void deleteMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteMouseEntered
         delete.setBackground(bodycolor);
     }//GEN-LAST:event_deleteMouseEntered
@@ -252,16 +317,41 @@ public class UserPage extends javax.swing.JInternalFrame {
         delete.setBackground(navcolor);
     }//GEN-LAST:event_deleteMouseExited
 
-    private void addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addMouseClicked
-        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        mainFrame.dispose();
-        add_User au = new add_User();
-        au.setVisible(true);
-        
-    }//GEN-LAST:event_addMouseClicked
+    private void editMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMouseClicked
+        int rowindex = UsersTable.getSelectedRow();
+        if(rowindex <0){
+            JOptionPane.showMessageDialog(null,"Please Select an User");
+        }else{
+            TableModel model = UsersTable.getModel();
+            add_User au = new add_User();
+            au.user_id.setText(""+model.getValueAt(rowindex,0));
+            au.f_name.setText(""+model.getValueAt(rowindex,1));
+            au.l_name.setText(""+model.getValueAt(rowindex,2));
+            au.u_email.setText(""+model.getValueAt(rowindex,3));
+            au.contact.setText(""+model.getValueAt(rowindex,4));
+            au.Username.setText(""+model.getValueAt(rowindex,5));
+            au.Password.setText(""+model.getValueAt(rowindex,6));
+            
+            au.gender = model.getValueAt(rowindex,7).toString();
+            
+            String gend = model.getValueAt(rowindex,7).toString();
+            if(gend.equals("MALE")){
+            au.female.setSelected(true);    
+            }
+            if(gend.equals("FEMALE")){
+            au.female.setSelected(true);    
+            }
+            au.setVisible(true);
+            au.action = "UPDATE";
+            au.au_label.setText("UPDATE");
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            mainFrame.dispose();
+        }
+    }//GEN-LAST:event_editMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable UsersTable;
     private javax.swing.JPanel add;
     private javax.swing.JPanel delete;
     private javax.swing.JPanel edit;
@@ -270,11 +360,12 @@ public class UserPage extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JPanel refresh;
     private javax.swing.JTextField search;
     private javax.swing.JPanel searchB;
     // End of variables declaration//GEN-END:variables

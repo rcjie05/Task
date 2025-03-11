@@ -38,17 +38,19 @@ public class dbConnector {
         }
         
         //Function to save data
-        public boolean insertData(String sql){
+        public int insertData(String sql){
+            int result;
             try{
                 PreparedStatement pst = connect.prepareStatement(sql);
                 pst.executeUpdate();
                 System.out.println("Inserted Successfully!");
                 pst.close();
-               return true;
+               result = 1;
             }catch(SQLException ex){
                 System.out.println("Connection Error: "+ex);
-               return false;
+               result = 0;
             }
+            return result;
         }
        
         
